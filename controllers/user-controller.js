@@ -1,4 +1,4 @@
-const { User, Post } = require('../models');
+const { User, Thought } = require('../models');
 const userControl = {
-    
+
 }
