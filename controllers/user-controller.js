@@ -5,5 +5,8 @@ const userControl = {
         .then((dbUserdata) => res.json(dbUserdata))
         .catch((err) => res.status(500).json(err))
     },
-
+    getUserById({ params }, res) {
+        User.findOne({ _id: params.id })
+        
+    }
 }
