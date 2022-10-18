@@ -12,7 +12,7 @@ const userControl = {
         .select('-__v')
         .then(dbUserData => {
             if (!dbUserdata) {
-                res.status(400).json({message: 'No users found with this id.'});
+                res.status(400).json({message: 'No users have been found with this id.'});
                 return;
             }
             res.json(dbUserData);
@@ -26,6 +26,29 @@ const userControl = {
         User.create(body)
         .then(dbUserData => res.json(dbUserData))
         .catch(err => res.status(400).json(err))
+    },
+    deleteUser({params}, res) {
+        User.findOneAndDelete({_id: params.id})
+        .then(dbUserData => {
+            if (!dbUserData) {
+                res.status(404).json({message: 'No users have been found with this id.'});
+                return;
+            }
+            Thought.deleteMany({_id: {}});
+            res.json(dbUserData);
+        })
+        .catch(err => res.status(400).json(err));
+    },
+    updateUser({params}, res) {
+        User.findOneAndUpdate({_id: params.id}, body, {new: true, runValidators: true})
+        .then(dbUserData => {
+            if(!dbUserData) {
+                res.status(404).json({message: 'No users have been found with this id.'});
+                return;
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.status(400).json(err));
     },
     
 }
