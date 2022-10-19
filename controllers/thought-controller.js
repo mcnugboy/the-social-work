@@ -16,7 +16,24 @@ const thoughtControl = {
             res.status(400).json(err)
         })
     },
-    
+    getThoughtById({params}, res) {
+        Thought.findOne({_id: params.id})
+        .populate({
+            path: 'reactions',
+            select: '-__v'
+        })
+        .select('-__v')
+        .then((dbThoughtData) => {
+            if(!dbThoughtData) {
+                res.status(404).json({message: 'No thoughts have been found with this id.'});
+            }
+            res.json(dbThoughtData);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).json(err)
+        })
+    },
 };
 
 module.exports = thoughtControl;
